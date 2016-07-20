@@ -1,5 +1,15 @@
 @CHARSET "UTF-8";
 
+h1 {
+	font-size: 36px;
+    font-family: "Arial", "Times New Roman", Times, serif;
+}
+
+h2 {
+	font-size: 24px;
+    font-family: "Arial", "Times New Roman", Times, serif;
+}
+
 table.imagebox {
 	width: 100%;
 }
@@ -54,7 +64,7 @@ td.tdthumbbottom {
 
 div.bottomtext {
     font-size: 24px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Arial", "Times New Roman", Times, serif;
 }
 
 input[type=submit] {
@@ -65,7 +75,7 @@ input[type=submit] {
     background-color: lightgrey;
     display: inline-block;
     font-size: 16px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Arial", "Times New Roman", Times, serif;
     border-radius: 5px;
 }
 
@@ -82,7 +92,33 @@ input[type="file"] {
     background-color: lightgrey;
     display: inline-block;
     font-size: 16px;
-    font-family: "Times New Roman", Times, serif;
+    font-family: "Arial", "Times New Roman", Times, serif;
     cursor: pointer;
     border-radius: 5px;
 }
+
+select#user-select {
+	color: #fff;
+	background-color: lightgrey;
+	color: black;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+    display: inline-block;
+	border-radius: 5px;
+    padding: 15px 32px;
+	text-align: center;
+	font-size: 16px;
+    font-family: "Arial", "Times New Roman", Times, serif;
+    width: 100%;
+}
+
+table#select-form {
+	width: 400px;
+}
+
+td#select-form {
+	width: 50%;
+	padding: 20px;
+	text-align: center;
+}
+
