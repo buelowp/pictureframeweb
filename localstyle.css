@@ -47,6 +47,7 @@ td.uploadform {
 
 td.upload {
 	width: 30%;
+	vertical-align: baseline;
 }
 
 td.images {
@@ -55,11 +56,13 @@ td.images {
 td.tdthumbtop {
 	text-align: center;
 	padding: 20px;
+	width: 100%;
 }
 
 td.tdthumbbottom {
 	text-align: center;
 	padding: 20px;
+	width: 100%;
 }
 
 div.bottomtext {
@@ -122,3 +125,21 @@ td#select-form {
 	text-align: center;
 }
 
+.delete {
+	text-align: center;
+	padding:30px;
+}
+
+input[type="checkbox"] {
+	padding: 20px;
+	height: 20px;
+	width: 20px;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.checkbox {
+	font-size: 16px;
+    font-family: "Arial", "Times New Roman", Times, serif;
+}

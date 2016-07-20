@@ -1,5 +1,5 @@
 <?php
-	
+	echo "<html><body>";
 	libxml_use_internal_errors(true);
 	
 	if (isset($_POST['targetdir']) && isset($_POST['submit'])) {
@@ -18,7 +18,11 @@
 			}
 		}
 		$returnurl = parentPath() . "index.php";
-		echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$returnurl.'">';
+
+		echo "<form action=\"uploadfor.php\" method=\"post\" name=\"frm\">";
+		echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">";
+		echo "</form></body></html>";
+		echo "<script type=\"text/javascript\">document.frm.submit();</script>";
 	}
 
 	function url_origin( $s, $use_forwarded_host = false )
