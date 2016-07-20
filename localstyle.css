@@ -1,0 +1,88 @@
+@CHARSET "UTF-8";
+
+table.imagebox {
+	width: 100%;
+}
+
+table.upload {
+	width: 100%;
+}
+
+table.uploadform {
+	width: 100%;
+}
+
+table.thumbnail {
+	width: 100%;
+	height: 100%;
+}
+
+tr.trthumbtop {
+	height: 80%;
+}
+
+tr.trthumbbottom {
+	height: 20%;
+}
+
+td.imagebox {
+	width: 25%;
+	text-align: center;
+}
+
+td.uploadform {
+	width: 75%;
+	padding: 15px;
+}
+
+td.upload {
+	width: 30%;
+}
+
+td.images {
+}
+
+td.tdthumbtop {
+	text-align: center;
+	padding: 20px;
+}
+
+td.tdthumbbottom {
+	text-align: center;
+	padding: 20px;
+}
+
+div.bottomtext {
+    font-size: 24px;
+    font-family: "Times New Roman", Times, serif;
+}
+
+input[type=submit] {
+	border: 1px solid #ccc;
+	padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    background-color: lightgrey;
+    display: inline-block;
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+    border-radius: 5px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    border: 1px solid #ccc;
+    padding: 15px 32px;
+    text-decoration: none;
+    text-align: center;
+    text-decoration: none;
+    background-color: lightgrey;
+    display: inline-block;
+    font-size: 16px;
+    font-family: "Times New Roman", Times, serif;
+    cursor: pointer;
+    border-radius: 5px;
+}

@@ -4,6 +4,7 @@
 	
 	if (isset($_POST['targetdir']) && isset($_POST['submit'])) {
 		$target_file = $_POST['targetdir'] . basename($_FILES["fileToUpload"]["name"]);
+		$target_thum = $_POST['targetdir'] . "thumbnails/";
 		$contentxml = $_POST['targetdir'] . "contentlist.xml";
 		echo "Uploading " . $target_file . "<br>";
 		echo "Updating " . $contentxml . "<br>";
@@ -12,7 +13,12 @@
 			if (updateContentXML($contentxml, $target_file, $_POST['targetdir']) == 0) {
 				echo "Unable to modify " . $contentxml . "<br>";
 			}
+			else {
+				createThumbs($_POST['targetdir'], basename($_FILES["fileToUpload"]["name"]), $target_thum, 150);
+			}
 		}
+		$returnurl = parentPath() . "index.php";
+		echo '<META HTTP-EQUIV=REFRESH CONTENT="1; '.$returnurl.'">';
 	}
 
 	function url_origin( $s, $use_forwarded_host = false )
@@ -154,5 +160,32 @@
 		}
 		return 1;
 	}
+
+	function createThumbs($pathToImages, $fname, $pathToThumbs, $thumbWidth)
+	{
+		// parse path for the extension
+		$info = pathinfo($pathToImages . $fname);
+		// continue only if this is a JPEG image
+		if ( strtolower($info['extension']) == 'jpg' ) {
+			echo "Creating thumbnail for {$fname} <br />";
 	
+			// load image and get image size
+			$img = imagecreatefromjpeg( "{$pathToImages}{$fname}" );
+			$width = imagesx( $img );
+			$height = imagesy( $img );
+	
+			// calculate thumbnail size
+			$new_width = $thumbWidth;
+			$new_height = floor( $height * ( $thumbWidth / $width ) );
+	
+			// create a new temporary image
+			$tmp_img = imagecreatetruecolor( $new_width, $new_height );
+	
+			// copy and resize old image into new image
+			imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
+	
+			// save thumbnail into a file
+			imagejpeg( $tmp_img, "{$pathToThumbs}{$fname}" );
+		}
+	}
 ?>
