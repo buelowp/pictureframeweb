@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+ <title>
+<?php echo "Manage images for " . $_POST['user']; ?>
+ </title>
  <link rel="stylesheet" type="text/css" href="localstyle.css">
 </head>
 <body>
@@ -17,7 +20,8 @@
 	  <td class="uploadform">Select an Image File to upload</td>
 	 <tr class="uploadform">
 	  <td class="uploadform">
-	 	<label class="custom-file-upload">Choose Image<input type="file" name="fileToUpload" id="fileToUpload"></label>
+  	 	<label class="custom-file-upload">Choose Image
+  	 	<input type="file" name="fileToUpload" id="fileToUpload"></label>
 	  </td>
 	 </tr>
 	 <tr>
