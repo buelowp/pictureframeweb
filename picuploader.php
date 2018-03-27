@@ -1,4 +1,5 @@
 <?php
+	$error_encountered = false;
 	echo "<html><body>";
 	libxml_use_internal_errors(true);
 	
@@ -10,19 +11,23 @@
 		echo "Updating " . $contentxml . "<br>";
 		
 		if (uploadFile($target_file, $target_file, $_POST['targetdir'])) {
+			if (createThumbs($_POST['targetdir'], basename($_FILES["fileToUpload"]["name"]), $target_thum, 150) == false) {
+				echo "Unable to create a thumbnail for " . basename($_FILES["fileToUpload"]["name"]);
+				$error_ecountered = true;
+			}
 			if (updateContentXML($contentxml, $target_file, $_POST['targetdir']) == 0) {
 				echo "Unable to modify " . $contentxml . "<br>";
-			}
-			else {
-				createThumbs($_POST['targetdir'], basename($_FILES["fileToUpload"]["name"]), $target_thum, 150);
+				$error_encountered = true;
 			}
 		}
 		$returnurl = parentPath() . "index.php";
 
-		echo "<form action=\"uploadfor.php\" method=\"post\" name=\"frm\">";
-		echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">";
-		echo "</form></body></html>";
-		echo "<script type=\"text/javascript\">document.frm.submit();</script>";
+		if (!$error_encountered) {
+			echo "<form action=\"uploadfor.php\" method=\"post\" name=\"frm\">";
+			echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">";
+			echo "</form></body></html>";
+			echo "<script type=\"text/javascript\">document.frm.submit();</script>";
+		}
 	}
 
 	function url_origin( $s, $use_forwarded_host = false )
@@ -98,7 +103,7 @@
 			$errors = libxml_get_errors();
 			foreach ($errors as $error) {
 				$xmlstr = $dom->saveXML();
-				$str = explode($xmlstr);
+				$str = explode($xmlstr, " ");
 				echo display_xml_error($error, $str);
 			}
 			return 0;
@@ -175,21 +180,27 @@
 	
 			// load image and get image size
 			$img = imagecreatefromjpeg( "{$pathToImages}{$fname}" );
-			$width = imagesx( $img );
-			$height = imagesy( $img );
+			if ($img) {
+				$width = imagesx( $img );
+				$height = imagesy( $img );
 	
-			// calculate thumbnail size
-			$new_width = $thumbWidth;
-			$new_height = floor( $height * ( $thumbWidth / $width ) );
+				// calculate thumbnail size
+				$new_width = $thumbWidth;
+				$new_height = floor( $height * ( $thumbWidth / $width ) );
 	
-			// create a new temporary image
-			$tmp_img = imagecreatetruecolor( $new_width, $new_height );
+				// create a new temporary image
+				$tmp_img = imagecreatetruecolor( $new_width, $new_height );
 	
-			// copy and resize old image into new image
-			imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
+				// copy and resize old image into new image
+				imagecopyresized( $tmp_img, $img, 0, 0, 0, 0, $new_width, $new_height, $width, $height );
 	
-			// save thumbnail into a file
-			imagejpeg( $tmp_img, "{$pathToThumbs}{$fname}" );
+				// save thumbnail into a file
+				imagejpeg( $tmp_img, "{$pathToThumbs}{$fname}" );
+				imagedestroy($img);
+				imagedestroy($tmp_img);
+				return true;
+			}
 		}
+		return false;
 	}
 ?>
