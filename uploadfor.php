@@ -21,11 +21,11 @@
 	 <tr class="uploadform">
 	  <td class="uploadform">
   	 	<label class="custom-file-upload">Choose Image
-  	 	<input type="file" name="fileToUpload" id="fileToUpload"></label>
+  	 	<input type="file" name="fileToUpload" id="fileToUpload" type="submit" name="submit"></label>
 	  </td>
 	 </tr>
 	 <tr>
-	  <td class="uploadform"><input class="button" type="submit" value="Upload Image" name="submit"></td>
+	  <td class="uploadform"><input class="button" id="uploadbutton" value="Upload Image" type="submit" name="submit"></td>
 	 </tr>
 	</table>
 	<?php
@@ -45,7 +45,7 @@
 	$images = glob($dirname . "*.jpg");
 	$count = 0;
 	$hastr = true;
-	
+
 	printf("<table class=\"imagebox\">\n");
 	foreach($images as $image) {
 		if (($count++ % 4) == 0) {
@@ -67,7 +67,7 @@
 		printf(" </tr>\n</table>\n");
 	}
 	echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">";
-	
+
 	function build_thumb_contents($image)
 	{
 		printf("  <td class=\"imagebox\">\n");
