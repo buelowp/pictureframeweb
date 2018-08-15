@@ -9,7 +9,7 @@
 <h1>Manage Picture Frame contents</h1>
 <h2>Select the frame, and manage the files that will be displayed.</h2>
 
-<form action="uploadfor.php" method="post">
+<form action="imagemanager.php" method="post">
 <h2>Select who to upload images for</h2>
 <table id="select-form">
  <tr id=select-form">
@@ -22,7 +22,7 @@
   <td id="select-form"><input id="usersubmit" type="submit" value="Select User" name="submit"></td>
  </tr>
 </table>
-</form> 
+</form>
 
 </body>
 </html>

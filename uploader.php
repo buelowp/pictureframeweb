@@ -21,7 +21,6 @@
 			}
 		}
 		$returnurl = parentPath() . "index.php";
-
 		if (!$error_encountered) {
 			echo "<form action=\"uploadfor.php\" method=\"post\" name=\"frm\">";
 			echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">";
@@ -29,7 +28,6 @@
 			echo "<script type=\"text/javascript\">document.frm.submit();</script>";
 		}
 	}
-
 	function url_origin( $s, $use_forwarded_host = false )
 	{
 		$ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
@@ -66,35 +64,30 @@
 
 	function display_xml_error($error, $xml)
 	{
-		if ($error->line != 0) {
-			$return  = $xml[$error->line - 1] . "<br>";
-			$return .= str_repeat('-', $error->column) . "^<br>";
+		$return  = $xml[$error->line - 1] . "<br>";
+		$return .= str_repeat('-', $error->column) . "^<br>";
 
-			switch ($error->level) {
-				case LIBXML_ERR_WARNING:
-					$return .= "Warning $error->code: ";
-					break;
-				case LIBXML_ERR_ERROR:
-					$return .= "Error $error->code: ";
-					break;
-				case LIBXML_ERR_FATAL:
-					$return .= "Fatal Error $error->code: ";
-					break;
-			}
-
-			$return .= trim($error->message) .
-			"<br>  Line: $error->line" .
-			"<br>  Column: $error->column";
-
-			if ($error->file) {
-				$return .= "<br>  File: $error->file";
-			}
-
-			return "$return<br>";
+		switch ($error->level) {
+			case LIBXML_ERR_WARNING:
+				$return .= "Warning $error->code: ";
+				break;
+			case LIBXML_ERR_ERROR:
+				$return .= "Error $error->code: ";
+				break;
+			case LIBXML_ERR_FATAL:
+				$return .= "Fatal Error $error->code: ";
+				break;
 		}
-		else {
-			return "Unknown error<br>";
+
+		$return .= trim($error->message) .
+		"<br>  Line: $error->line" .
+		"<br>  Column: $error->column";
+
+		if ($error->file) {
+			$return .= "<br>  File: $error->file";
 		}
+
+		return "$return<br>";
 	}
 
 	function updateContentXML($xml, $file, $path)
@@ -138,7 +131,6 @@
 		echo "Image file type is " . $imageFileType . "<br>";
 		echo "Image destination path is " . $path . "<br>";
 		echo "Image name is " . $file . "<br>";
-		echo "Temp file name is " . $_FILES["fileToUpload"]["tmp_name"] . "<br>";
 
 		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
 		if($check !== false) {
@@ -175,7 +167,6 @@
 		}
 		return 1;
 	}
-
 	function createThumbs($pathToImages, $fname, $pathToThumbs, $thumbWidth)
 	{
 		// parse path for the extension

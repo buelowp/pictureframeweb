@@ -4,70 +4,37 @@
  <title>
 <?php echo "Manage images for " . $_POST['user']; ?>
  </title>
- <link rel="stylesheet" type="text/css" href="localstyle.css">
+ <link rel="stylesheet" href="imageupload.css" type="text/css">
 </head>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script type="text/javascript">
-$( function() {
-    $("form").submit(function(){
-          var form_data = new FormData(this);
-          $.ajax({
-            type: "POST",
-            url: "upload.php",
-            data: {userfile:JSON.stringify(form_data)},
-            dataType: "json",
-            timeout: 15000,
-            success: function( data ) {
-                        console.log( "Success" );
-            }
-        });
-        return false;
-    });
-});
-</script>
+<script src="script.js" type="text/javascript"></script>
 <body>
 
-<table class="upload">
+<table class="imagemanager">
  <tr>
-  <td class="upload">
+  <td class="chooser">
 	<h1>Select the files to be displayed on <?php printf("%s", $_POST['user']); ?>'s picture frame</h1>
 	<h2>Must be a .jpg image for now. Should be sized to 1280x800 if possible.</h2>
 	<h2>You can add new files here, or delete selected files.</h2>
-    <form enctype="multipart/form-data" method="post" id="uploadform">
+    <form id="uploadform" action="uploader.php" method="post" enctype="multipart/form-data">
         <?php
-    		$target_dir = "";
-    		if (isset($_POST['user'])) {
-    			$target_dir = $_POST['user'] . "/";
-    		}
-    		echo "<input type=\"hidden\" name=\"targetdir\" value=\"" . $target_dir . "\">\n";
-    		echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">\n";
-      		?>
-          <h2>File to upload</h2>
-          <input name="userfile" type="file" class='file'/>
-          <input type="submit" name="send" value="Upload File" />
-      </form>
-      <!--
-      	<form action="picuploader.php" method="post" enctype="multipart/form-data">
-	<table class="uploadform">
-	 <tr class="uploadform">
-	  <td class="uploadform">Select an Image File to upload</td>
-	 <tr class="uploadform">
-	  <td class="uploadform">
-  	 	<label class="custom-file-upload">Choose Image
-  	 	<input name="fileToUpload" id="fileToUpload" type="file"></label>
-	  </td>
-	 </tr>
-	 <tr>
-	  <td class="uploadform"><input class="button" id="uploadbutton" value="Upload Image" type="submit" name="submit"></td>
-	 </tr>
-	</table>
-	</form>
--->
+            $target_dir = "";
+            if (isset($_POST['user'])) {
+                $target_dir = $_POST['user'] . "/";
+            }
+            echo "<input type=\"hidden\" name=\"targetdir\" value=\"" . $target_dir . "\">\n";
+            echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">\n";
+        ?>
+
+        <input id="uploadImage" type="file" accept="image/*" name="image" onchange="updateFilename()"/>
+        <label for="uploadImage" class="custom-file-upload">Select File</label>
+        <div id="preview" class="file_input_display"></div>
+        <input type="submit" value="Upload">
+    </form>
+    <div id="err"></div>
   </td>
   <td class="images">
-<!--
   <form action="imagedelete.php" method="post" enctype="multipart/form-data">
-  -->
 <?php
 	$dirname = $target_dir . "thumbnails/";
 	$images = glob($dirname . "*.jpg");
@@ -114,10 +81,8 @@ $( function() {
 	}
 ?>
 
-	<div class="delete"><input class="button" type="submit" value="Delete Selected" name="submit"></div>
-    <!--
+	<div class="deletebutton"><input id="deletebutton" class="button" type="submit" value="Delete Selected" name="submit"></div>
   </form>
--->
   </td>
 </table>
 
