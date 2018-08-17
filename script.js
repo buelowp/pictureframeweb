@@ -7,7 +7,7 @@ $(document).ready(function (e) {
             data:  new FormData(this),
             contentType: false,
             cache: false,
-            processData:false,
+            processData: false,
             beforeSend : function() {
                 $("#preview").fadeOut();
                 $("#err").fadeOut();
@@ -19,7 +19,7 @@ $(document).ready(function (e) {
                 }
                 else {
                     // view uploaded file.
-                    $("#preview").html(data).fadeIn();
+                    $("#err").html(data).fadeIn();
                     $("#uploadform")[0].reset();
                 }
             },

@@ -1,18 +1,15 @@
 <?php
 	$error_encountered = false;
-	echo "<html><body>";
 	libxml_use_internal_errors(true);
 
-	if (isset($_POST['targetdir']) && isset($_POST['submit'])) {
-		$target_file = $_POST['targetdir'] . basename($_FILES["fileToUpload"]["name"]);
+	if (isset($_POST['targetdir'])) {
+		$target_file = $_POST['targetdir'] . basename($_FILES["image"]["name"]);
 		$target_thum = $_POST['targetdir'] . "thumbnails/";
 		$contentxml = $_POST['targetdir'] . "contentlist.xml";
-		echo "Uploading " . $target_file . "<br>";
-		echo "Updating " . $contentxml . "<br>";
 
 		if (uploadFile($target_file, $target_file, $_POST['targetdir'])) {
-			if (createThumbs($_POST['targetdir'], basename($_FILES["fileToUpload"]["name"]), $target_thum, 150) == false) {
-				echo "Unable to create a thumbnail for " . basename($_FILES["fileToUpload"]["name"]);
+			if (createThumbs($_POST['targetdir'], basename($_FILES["image"]["name"]), $target_thum, 150) == false) {
+				echo "Unable to create a thumbnail for " . basename($_FILES["image"]["name"]);
 				$error_ecountered = true;
 			}
 			if (updateContentXML($contentxml, $target_file, $_POST['targetdir']) == 0) {
@@ -20,14 +17,22 @@
 				$error_encountered = true;
 			}
 		}
+
 		$returnurl = parentPath() . "index.php";
+
 		if (!$error_encountered) {
-			echo "<form action=\"uploadfor.php\" method=\"post\" name=\"frm\">";
+			echo "<form action=\"imagemanager.php\" method=\"post\" name=\"frm\">";
 			echo "<input type=\"hidden\" name=\"user\" value=\"" . $_POST['user'] . "\">";
 			echo "</form></body></html>";
 			echo "<script type=\"text/javascript\">document.frm.submit();</script>";
 		}
 	}
+	else {
+		if (!isset($_POST['targetdir'])) {
+			echo "Target directory not set";
+		}
+	}
+
 	function url_origin( $s, $use_forwarded_host = false )
 	{
 		$ssl      = ( ! empty( $s['HTTPS'] ) && $s['HTTPS'] == 'on' );
@@ -50,14 +55,12 @@
 		$absolute_url = full_url( $_SERVER );
 		$urlpath = "";
 
-		echo "Local URL is " . $absolute_url . "<br>";
 		$pos = strrpos($absolute_url, "/");
 		if ($pos === false) {
 			echo "Invalid URL passed for location<br>";
 		}
 		else {
 			$urlpath = substr($absolute_url, 0, $pos);
-			echo "Local parent URL: " . $urlpath . "<br>";
 		}
 		return $urlpath . "/";
 	}
@@ -109,7 +112,6 @@
 
 		$root = $dom->documentElement;
 		$u = parentPath() . $file;
-		echo "Updating xml to include URL " . $u . "<br>";
 		$url = $dom->createElement("Url", $u);
 		$image = $dom->createElement("Image");
 		$image->appendChild($url);
@@ -121,21 +123,15 @@
 				echo display_xml_error($error, $dom);
 			}
 		}
-		printf("Saved %d bytes to %s<br>", $rval, $xml);
 		return $rval;
 	}
 
 	function uploadFile($file, $path)
 	{
 		$imageFileType = pathinfo($file, PATHINFO_EXTENSION);
-		echo "Image file type is " . $imageFileType . "<br>";
-		echo "Image destination path is " . $path . "<br>";
-		echo "Image name is " . $file . "<br>";
 
-		$check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
-		if($check !== false) {
-			echo "File is an image - " . $check["mime"] . ".<br>";
-		} else {
+		$check = getimagesize($_FILES["image"]["tmp_name"]);
+		if($check == false) {
 			echo "File is not an image.";
 			return 0;
 		}
@@ -147,7 +143,7 @@
 		}
 
 		// Check file size
-		if ($_FILES["fileToUpload"]["size"] > 25500000) {
+		if ($_FILES["image"]["size"] > 25500000) {
 			echo "Sorry, your file is too large.<br>";
 			return 0;
 		}
@@ -158,10 +154,7 @@
 			return 0;
 		}
 
-		if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $file)) {
-			echo "The file ". basename( $_FILES["fileToUpload"]["name"]). " has been uploaded.<br>";
-		}
-		else {
+		if (!move_uploaded_file($_FILES["image"]["tmp_name"], $file)) {
 			echo "Sorry, there was an error uploading your file.<br>";
 			return 0;
 		}
@@ -173,7 +166,6 @@
 		$info = pathinfo($pathToImages . $fname);
 		// continue only if this is a JPEG image
 		if ( strtolower($info['extension']) == 'jpg' ) {
-			echo "Creating thumbnail for {$fname} <br />";
 
 			// load image and get image size
 			$img = imagecreatefromjpeg( "{$pathToImages}{$fname}" );

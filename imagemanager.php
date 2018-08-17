@@ -14,8 +14,8 @@
  <tr>
   <td class="chooser">
 	<h1>Select the files to be displayed on <?php printf("%s", $_POST['user']); ?>'s picture frame</h1>
-	<h2>Must be a .jpg image for now. Should be sized to 1280x800 if possible.</h2>
-	<h2>You can add new files here, or delete selected files.</h2>
+	<h2>Selections limited to JPEG images</h2>
+    <h2>Images should be 1280x800 or 16:10 aspect ratio</h2>
     <form id="uploadform" action="uploader.php" method="post" enctype="multipart/form-data">
         <?php
             $target_dir = "";
@@ -29,7 +29,7 @@
         <input id="uploadImage" type="file" accept="image/*" name="image" onchange="updateFilename()"/>
         <label for="uploadImage" class="custom-file-upload">Select File</label>
         <div id="preview" class="file_input_display"></div>
-        <input type="submit" value="Upload">
+        <input id="submit" type="submit" name="submit" value="Submit" />
     </form>
     <div id="err"></div>
   </td>
